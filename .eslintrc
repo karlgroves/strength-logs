@@ -1,0 +1,49 @@
+{
+    "env": {
+        "node": true,
+        "jquery": true,
+        "es6": true
+    },
+    "globals": {
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "no-bitwise": 2,
+        "camelcase": 0,
+        "curly": 2,
+        "eqeqeq": 2,
+        "wrap-iife": [
+            2,
+            "any"
+        ],
+        "indent": [
+            0,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "no-use-before-define": [
+            2,
+            {
+                "functions": false
+            }
+        ],
+        "new-cap": 2,
+        "no-caller": 2,
+        "quotes": [
+            2,
+            "single",
+            {
+                "allowTemplateLiterals": true,
+                "avoidEscape": true
+            }
+        ],
+        "no-undef": 0,
+        "no-unused-vars": 0,
+        "strict": [
+            1,
+            "global"
+        ]
+    }
+}
