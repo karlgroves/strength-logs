@@ -35,3 +35,4 @@ app/logs/
 .env
 .nyc_output/*
 coverage/
+cypress/instrumented/*

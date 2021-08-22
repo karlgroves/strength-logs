@@ -1,0 +1,18 @@
+{
+    "apps": [
+        {
+            "name": "strengthlogs",
+            "exec_mode": "cluster",
+            "instances": "max",
+            "script": "app/app.js",
+            "watch": [
+                "app"
+            ],
+            "watch_production": false,
+            "ignore_watch": [
+                "logs",
+                "app/logs"
+            ]
+        }
+    ]
+}

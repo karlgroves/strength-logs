@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Training Logs",
+    "description": "Format of a specific training log",
+    "type": "object",
+    "properties": {
+        "trainingLogID": {
+            "title": "Training Log ID",
+            "description": "Primary Key ID of the log",
+            "type": "string",
+            "maxLength": 36
+        },
+        "userID": {
+            "title": "User ID",
+            "description": "ID of the user relating to the log",
+            "type": "string",
+            "maxLength": 36
+        },
+        "exerciseID": {
+            "title": "Exercise ID",
+            "description": "ID of the exercise being logged",
+            "type": "string",
+            "maxLength": 36
+        },
+        "sets": {
+            "title": "Sets",
+            "description": "Number of sets being logged",
+            "type": "number",
+            "maxLength": 3
+        },
+        "reps": {
+            "title": "Reps",
+            "description": "Number of reps being logged",
+            "type": "number",
+            "maxLength": 3
+        },
+        "weight": {
+            "title": "Weight",
+            "description": "Weight being logged",
+            "type": "number",
+            "maxLength": 4
+        },
+        "dateAdded": {
+            "title": "Date Added",
+            "description": "Unix timestamp for the log entry",
+            "type": "string",
+            "maxLength": 14
+        }
+    }
+}
+
+

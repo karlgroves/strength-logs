@@ -1,0 +1,20 @@
+{
+    "logFile":"./logs/reporter.log",
+    "testParams": {
+        "exercises":{
+
+            "exerciseName":""
+        },
+        "users":{
+            "userName":"",
+            "userPassword":""
+        },
+        "traininglogs":{
+            "userID":"",
+            "exerciseID":"",
+            "sets":"",
+            "reps":"",
+            "weight":""
+        }
+    }
+}

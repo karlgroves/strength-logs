@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Exercises",
+    "description": "Format of a specific exercises",
+    "type": "object",
+    "properties": {
+        "exerciseID": {
+            "title": "Exercise ID",
+            "description": "Primary Key ID of the exercise",
+            "type": "string",
+            "maxLength": 36
+        },
+        "exerciseName": {
+            "title": "Exercise Name",
+            "description": "Human readable name of the exercise",
+            "type": "string",
+            "maxLength": 255
+        }
+    }
+}
+
+

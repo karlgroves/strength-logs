@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Users",
+    "description": "Format of a specific user",
+    "type": "object",
+    "properties": {
+        "userID": {
+            "title": "User ID",
+            "description": "Primary Key ID of the user record",
+            "type": "string",
+            "maxLength": 36
+        },
+        "userEmail": {
+            "title": "User Email",
+            "description": "Email address for the user",
+            "type": "string",
+            "maxLength": 320
+        },
+        "userPassword": {
+            "title": "User Password",
+            "description": "Encrypted password for the user",
+            "type": "string",
+            "maxLength": 72
+        }
+    }
+}
+
+
