@@ -2,8 +2,6 @@
  * Utility functions
  */
 
-'use strict';
-
 module.exports = {
 
     getPKName: function (table) {

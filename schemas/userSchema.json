@@ -21,6 +21,15 @@
             "description": "Encrypted password for the user",
             "type": "string",
             "maxLength": 72
+        },
+        "isAdmin": {
+            "title": "Is Admin",
+            "description": "Indicates whether the user is an admin or not",
+            "type": "number",
+            "enum": [
+                0,
+                1
+            ]
         }
     }
 }

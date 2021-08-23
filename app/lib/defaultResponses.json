@@ -1,0 +1,42 @@
+{
+    "success": {
+        "status": 200,
+        "message": "OK",
+        "code": "success",
+        "data": null
+    },
+    "accepted": {
+        "status": 202,
+        "message": "ACCEPTED",
+        "code": "accepted",
+        "data": null
+    },
+    "bad_request": {
+        "status": 400,
+        "message": "BAD REQUEST",
+        "code": "invalid_param",
+        "data": null
+    },
+    "not_found": {
+        "status": 404,
+        "message": "NOT FOUND",
+        "code": "not_found",
+        "info": "Record identified by the supplied `id` does not exist",
+        "data": null
+    },
+    "method_not_allowed": {
+        "status": 405,
+        "message": "Method Not Allowed",
+        "code": "method_not_allowed",
+        "info": "Request method is not honored by this API",
+        "data": null
+    },
+    "internal_server_error": {
+        "status": 500,
+        "message": "Internal Server Error",
+        "data": null
+    }
+}
+
+
+

@@ -1,5 +1,5 @@
 /**
- *
+ * Tests for User Routes
  */
 
 const chai = require('chai');
@@ -8,7 +8,7 @@ const server = require('../app/app');
 const should = chai.should();
 const expect = chai.expect;
 const {v4: uuidv4} = require('uuid');
-const config = require('../config.json');
+const config = require('../app/config.json');
 
 chai.use(chaiHttp);
 chai.use(require('chai-json'));
@@ -26,12 +26,7 @@ describe('Routes', () => {
             .post('/')
             .set('content-type', 'application/json')
             .send({
-                responseID: config.testParams.responseID,
-                url: config.testParams.url,
-                viewportHeight: config.testParams.viewportHeight,
-                viewportWidth: config.testParams.viewportWidth,
-                waitFor: config.testParams.waitFor,
-                callbackUrl: config.testParams.callbackUrl
+                responseID: config.testParams.responseID
             })
             .end((err, res) => {
                 expect(err).to.be.null;
@@ -51,11 +46,7 @@ describe('Routes', () => {
             .post('/')
             .set('content-type', 'application/json')
             .send({
-                url: config.testParams.url,
-                viewportHeight: config.testParams.viewportHeight,
-                viewportWidth: config.testParams.viewportWidth,
-                waitFor: config.testParams.waitFor,
-                callbackUrl: config.testParams.callbackUrl
+                responseID: config.testParams.responseID
             })
             .end((err, res) => {
                 expect(err).to.be.null;
@@ -75,12 +66,7 @@ describe('Routes', () => {
             .post('/')
             .set('content-type', 'application/json')
             .send({
-                    responseID: '',
-                    url: config.testParams.url,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {
@@ -101,12 +87,7 @@ describe('Routes', () => {
             .post('/')
             .set('content-type', 'application/json')
             .send({
-                    responseID: 'poop',
-                    url: config.testParams.url,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {
@@ -126,11 +107,7 @@ describe('Routes', () => {
             chai.request(server)
             .post('/')
             .send({
-                    responseID: config.testParams.responseID,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {
@@ -151,12 +128,7 @@ describe('Routes', () => {
             .post('/')
             .set('content-type', 'application/json')
             .send({
-                responseID: config.testParams.responseID,
-                url: 'poop',
-                viewportHeight: config.testParams.viewportHeight,
-                viewportWidth: config.testParams.viewportWidth,
-                waitFor: config.testParams.waitFor,
-                callbackUrl: config.testParams.callbackUrl
+                responseID: config.testParams.responseID
             })
             .end((err, res) => {
                 expect(err).to.be.null;
@@ -200,7 +172,6 @@ describe('Routes', () => {
             });
         });
 
-
         it('it should fail because no ID was provided in the request', (done) => {
             chai.request(server)
             .get('/')
@@ -241,12 +212,7 @@ describe('Routes', () => {
             .set('content-type', 'application/json')
             .send(
                 {
-                    responseID: config.testParams.responseID,
-                    url: config.testParams.url,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {

@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "description": "A Node-Based API for logging weight-training activities",
     "main": "app/app.js",
+    "repository": "git@github.com:karlgroves/strength-logs.git",
     "scripts": {
         "start": "pm2 start pm2.json",
         "stop": "pm2 stop pm2.json",
@@ -13,7 +14,7 @@
         "dev": "nodemon app/app.js",
         "test:coverage": "nyc mocha test/*.js",
         "mocha": "nyc mocha --exit --recursive --timeout 30000",
-        "test": "npm run lint && npm run mocha",
+        "test": "npm install && npm run lint && npm run mocha"
     },
     "dependencies": {
         "body-parser": "^1.19.0",
@@ -26,8 +27,8 @@
         "mysql": "^2.18.1",
         "pm2": "^5.1.1",
         "sqlstring": "^2.3.2",
-        "validator": "^13.6.0",
-        "uuid": "^8.3.2"
+        "uuid": "^8.3.2",
+        "validator": "^13.6.0"
     },
     "devDependencies": {
         "eslint": "^7.32.0",
@@ -39,7 +40,6 @@
         "chai-json": "^1.0.0",
         "husky": "^4.3.0",
         "mocha": "^8.2.1",
-        "nyc": "^15.1.0",
-        "uuid": "^8.3.2"
+        "nyc": "^15.1.0"
     }
 }

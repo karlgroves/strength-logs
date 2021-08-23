@@ -8,7 +8,7 @@ const server = require('../app/app');
 const should = chai.should();
 const expect = chai.expect;
 const {v4: uuidv4} = require('uuid');
-const config = require('../config.json');
+const config = require('../app/config.json');
 
 chai.use(chaiHttp);
 chai.use(require('chai-json'));
@@ -24,12 +24,7 @@ describe('Routes', () => {
             .post('/exercises/')
             .set('content-type', 'application/json')
             .send({
-                responseID: config.testParams.responseID,
-                url: config.testParams.url,
-                viewportHeight: config.testParams.viewportHeight,
-                viewportWidth: config.testParams.viewportWidth,
-                waitFor: config.testParams.waitFor,
-                callbackUrl: config.testParams.callbackUrl
+                responseID: config.testParams.responseID
             })
             .end((err, res) => {
                 expect(err).to.be.null;
@@ -44,16 +39,12 @@ describe('Routes', () => {
             });
         });
 
-        it('it should fail because responseID does not exist in the POST body', (done) => {
+        it('it should fail because exerciseName does not exist in the POST body', (done) => {
             chai.request(server)
             .post('/exercises/')
             .set('content-type', 'application/json')
             .send({
-                url: config.testParams.url,
-                viewportHeight: config.testParams.viewportHeight,
-                viewportWidth: config.testParams.viewportWidth,
-                waitFor: config.testParams.waitFor,
-                callbackUrl: config.testParams.callbackUrl
+                responseID: config.testParams.responseID
             })
             .end((err, res) => {
                 expect(err).to.be.null;
@@ -68,17 +59,12 @@ describe('Routes', () => {
             });
         });
 
-        it('it should fail because responseID is blank', (done) => {
+        it('it should fail because exerciseName is blank', (done) => {
             chai.request(server)
             .post('/exercises/')
             .set('content-type', 'application/json')
             .send({
-                    responseID: '',
-                    url: config.testParams.url,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {
@@ -139,7 +125,6 @@ describe('Routes', () => {
             });
         });
 
-
         it('it should fail because the ID was not found', (done) => {
             chai.request(server)
             .get('/exercises/' + theBadId)
@@ -158,18 +143,13 @@ describe('Routes', () => {
     });
 
     describe('/PUT', () => {
-        it('it should update a record', (done) => {
+        it('it should update an exercise record', (done) => {
             chai.request(server)
             .put('/exercises/')
             .set('content-type', 'application/json')
             .send(
                 {
-                    responseID: config.testParams.responseID,
-                    url: config.testParams.url,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {
@@ -185,18 +165,13 @@ describe('Routes', () => {
             });
         });
 
-        it('it should fail to update a record because the ID doe not exist', (done) => {
+        it('it should fail to update a record because the ID does not exist', (done) => {
             chai.request(server)
             .put('/exercises/')
             .set('content-type', 'application/json')
             .send(
                 {
-                    responseID: config.testParams.responseID,
-                    url: config.testParams.url,
-                    viewportHeight: config.testParams.viewportHeight,
-                    viewportWidth: config.testParams.viewportWidth,
-                    waitFor: config.testParams.waitFor,
-                    callbackUrl: config.testParams.callbackUrl
+                    responseID: config.testParams.responseID
                 }
             )
             .end((err, res) => {
