@@ -4,12 +4,10 @@
 
 const validator = require('validator');
 const defaultResponses = require('../lib/defaultResponses.json');
-const mysql = require('mysql');
 const SqlString = require('sqlstring');
-const config = require('../config.json');
 const dbService = require('../lib/dbService');
+const handleResponse = require('../helpers/handleResponse');
 const dbConn = dbService.db();
-const utils = require('../lib/util');
 
 module.exports = function (app) {
 
@@ -20,7 +18,7 @@ module.exports = function (app) {
         log.info(new Date(), req.method, req.url);
 
         // @TODO validate that the userID exists
-        let userExists = util.userExists(req.params.userID);
+        const userExists = util.userExists(req.params.userID);
         log.info(userExists);
 
         //
@@ -29,7 +27,7 @@ module.exports = function (app) {
         // and the person making the request is that user
 
 
-        let sql = 'SELECT ' +
+        const sql = 'SELECT ' +
             'traininglogs.*, exercises.exerciseName ' +
             'FROM ' +
             'traininglogs, exercises ' +
@@ -40,28 +38,8 @@ module.exports = function (app) {
 
         log.info(sql);
 
-        dbConn.query(sql, (error, results, fields) => {
-            if (error) {
-                log.error(error);
-                defaultResponses.internal_server_error.info = error;
-                res.status(500).json(defaultResponses.internal_server_error);
-            }
-            else {
-
-                log.info(results);
-                log.info(typeof results);
-
-                let data = JSON.stringify(results);
-                log.info(data);
-
-                if (typeof results !== 'object') {
-                    res.status(404).json(defaultResponses.not_found);
-                }
-                else if (results) {
-                    defaultResponses.success.data = results;
-                    res.status(200).json(defaultResponses.success);
-                }
-            }
+        dbConn.query(sql, (error, results) => {
+            handleResponse({ error, results, res });
         });
     });
 
@@ -82,78 +60,52 @@ module.exports = function (app) {
             log.info(req.method);
 
             if (validator.isUUID(req.params.id) === false) {
-                res.status(400).end();
+                return res.status(400).end();
             }
-            else {
-                let sql = 'SELECT traininglogID FROM traininglogs WHERE traininglogID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
-                log.info(sql);
 
-                dbConn.query(sql, (error, results, fields) => {
-                    if (error) {
-                        log.error(error.message);
-                        res.status(500).end();
-                    }
-                    else {
-                        log.info(results);
-                        log.info(typeof results);
+            const sql = `SELECT traininglogID FROM traininglogs WHERE traininglogID=${SqlString.escape(req.params.id)} LIMIT 1`;
+            log.info(sql);
 
-                        let data = results[0];
-                        log.info(data);
+            dbConn.query(sql, (error, results) => {
+                if (error) {
+                    log.error(error.message);
+                    return res.status(500).end();
+                }
 
-                        if (typeof results !== 'object' || results.length === 0) {
-                            res.status(404).end();
-                        }
-                        else if (results) {
-                            defaultResponses.success.data = data;
-                            res.status(200).end();
-                        }
-                    }
-                });
-            }
-        }
+                log.info(results);
+                log.info(typeof results);
 
-        else {
+                if (!results || !Array.isArray(results) || !results.length) {
+                    return res.status(404).end();
+                }
 
+                const data = results[0];
+                log.info(data);
+
+                defaultResponses.success.data = data;
+                return res.status(200).end();
+            });
+        } else {
             // gotta use an ID in the request and the ID must be a UUID/GUID
             if (validator.isUUID(req.params.id) === false) {
-                res.status(400).json(defaultResponses.bad_request);
+                return res.status(400).json(defaultResponses.bad_request);
             }
-            else {
-                let sql = 'SELECT ' +
-                    'traininglogs.*, exercises.exerciseName ' +
-                    'FROM ' +
-                    'traininglogs, exercises ' +
-                    'WHERE ' +
-                    'traininglogs.exerciseID=exercises.exerciseID ' +
-                    'AND ' +
-                    'traininglogID="' + req.params.id + '" ' +
-                    'LIMIT 1';
 
-                log.info(sql);
+            const sql = 'SELECT ' +
+                'traininglogs.*, exercises.exerciseName ' +
+                'FROM ' +
+                'traininglogs, exercises ' +
+                'WHERE ' +
+                'traininglogs.exerciseID=exercises.exerciseID ' +
+                'AND ' +
+                'traininglogID="' + req.params.id + '" ' +
+                'LIMIT 1';
 
-                dbConn.query(sql, (error, results, fields) => {
-                    if (error) {
-                        log.error(error.message);
-                        res.status(500).json(defaultResponses.internal_server_error);
-                    }
-                    else {
+            log.info(sql);
 
-                        log.info(results);
-                        log.info(typeof results);
-
-                        let data = results[0];
-                        log.info(data);
-
-                        if (typeof results !== 'object' || results.length === 0) {
-                            res.status(404).json(defaultResponses.not_found);
-                        }
-                        else if (results) {
-                            defaultResponses.success.data = data;
-                            res.status(200).json(defaultResponses.success);
-                        }
-                    }
-                });
-            }
+            dbConn.query(sql, (error, results) => {
+                handleResponse({ error, results, res });
+            });
         }
     });
 };

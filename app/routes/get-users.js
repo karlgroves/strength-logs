@@ -4,12 +4,11 @@
 
 const validator = require('validator');
 const defaultResponses = require('../lib/defaultResponses.json');
-const mysql = require('mysql');
 const SqlString = require('sqlstring');
-const config = require('../config.json');
 const dbService = require('../lib/dbService');
 const dbConn = dbService.db();
 const utils = require('../lib/util');
+const handleResponse = require('../helpers/handleResponse');
 
 module.exports = function (app) {
 
@@ -21,31 +20,11 @@ module.exports = function (app) {
 
         // @TODO only admin users can access this route
 
-        let sql = 'SELECT * FROM users';
+        const sql = 'SELECT * FROM users';
         log.info(sql);
 
-        dbConn.query(sql, (error, results, fields) => {
-            if (error) {
-                log.error(error);
-                defaultResponses.internal_server_error.info = error;
-                res.status(500).json(defaultResponses.internal_server_error);
-            }
-            else {
-
-                log.info(results);
-                log.info(typeof results);
-
-                let data = JSON.stringify(results);
-                log.info(data);
-
-                if (typeof results !== 'object') {
-                    res.status(404).json(defaultResponses.not_found);
-                }
-                else if (results) {
-                    defaultResponses.success.data = results;
-                    res.status(200).json(defaultResponses.success);
-                }
-            }
+        dbConn.query(sql, (error, results) => {
+            handleResponse({ error, res, results });
         });
     });
 
@@ -59,7 +38,7 @@ module.exports = function (app) {
         log.info('Requested ID: ' + req.params.id);
 
         // @TODO validate that the userID exists
-        let userExists = utils.userExists(req.params.id);
+        const userExists = utils.userExists(req.params.id);
 
         console.log('-----');
         console.log('USER EXISTS');
@@ -76,71 +55,28 @@ module.exports = function (app) {
             log.info(req.method);
 
             if (validator.isUUID(req.params.id) === false) {
-                res.status(400).end();
+                return res.status(400).end();
             }
-            else {
-                let sql = 'SELECT * FROM users WHERE userID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
-                log.info(sql);
 
-                dbConn.query(sql, (error, results, fields) => {
-                    if (error) {
-                        log.error(error.message);
-                        res.status(500).end();
-                    }
-                    else {
-                        log.info(results);
-                        log.info(typeof results);
+            const sql = 'SELECT * FROM users WHERE userID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
+            log.info(sql);
 
-                        let data = results[0];
-                        log.info(data);
-
-                        if (typeof results !== 'object' || results.length === 0) {
-                            res.status(404).end();
-                        }
-                        else if (results) {
-                            defaultResponses.success.data = data;
-                            res.status(200).end();
-                        }
-                    }
-                });
-            }
-        }
-
-        else {
-
+            dbConn.query(sql, (error, results) => {
+                handleResponse({ error, res, results });
+            });
+        } else {
             if (validator.isUUID(req.params.id) === false) {
-                res.status(400).json(defaultResponses.bad_request);
+                return res.status(400).json(defaultResponses.bad_request);
             }
-            else {
 
-                // @TODO only admin users can access this route
+            // @TODO only admin users can access this route
 
-                let sql = 'SELECT * FROM users WHERE userID="' + req.params.id + '" LIMIT 1';
-                log.info(sql);
+            const sql = 'SELECT * FROM users WHERE userID="' + req.params.id + '" LIMIT 1';
+            log.info(sql);
 
-                dbConn.query(sql, (error, results, fields) => {
-                    if (error) {
-                        log.error(error.message);
-                        res.status(500).json(defaultResponses.internal_server_error);
-                    }
-                    else {
-
-                        log.info(results);
-                        log.info(typeof results);
-
-                        let data = results[0];
-                        log.info(data);
-
-                        if (typeof results !== 'object' || results.length === 0) {
-                            res.status(404).json(defaultResponses.not_found);
-                        }
-                        else if (results) {
-                            defaultResponses.success.data = data;
-                            res.status(200).json(defaultResponses.success);
-                        }
-                    }
-                });
-            }
+            dbConn.query(sql, (error, results) => {
+               handleResponse({error, res, results });
+            });
         }
     });
 };

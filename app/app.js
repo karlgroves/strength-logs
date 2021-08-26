@@ -35,8 +35,8 @@ require('./routes')(app);
 
 
 const server = app.listen(app.get('port'), function (err, res) {
-    let host = server.address().address;
-    let port = server.address().port;
+    const host = server.address().address;
+    const port = server.address().port;
 
     if(err){
         log.error('-----');

@@ -8,6 +8,7 @@ const dbService = require('../lib/dbService');
 const dbConn = dbService.db();
 const utils = require('../lib/util');
 const bcrypt = require('bcrypt');
+const handleResponse = require('../helpers/handleResponse');
 
 module.exports = function (app) {
 
@@ -20,42 +21,25 @@ module.exports = function (app) {
         log.info(new Date(), req.method, req.url, req.body);
         if (typeof req.body !== 'object') {
             defaultResponses.bad_request.info = 'request body is malformed';
-            res.status(400).json(defaultResponses.bad_request);
+            return res.status(400).json(defaultResponses.bad_request);
         }
-        else {
 
-            //@TODO encrypt the password: ``` req.body.userPassword ``` using https://www.npmjs.com/package/bcrypt
+        //@TODO encrypt the password: ``` req.body.userPassword ``` using https://www.npmjs.com/package/bcrypt
 
-            let sql = 'SELECT userID FROM users WHERE userEmail=' + +SqlString.escape(req.body.userEmail) + ' AND userPassword=' + passwordEncrypted + ' LIMIT 1';
+        const sql = 'SELECT userID FROM users WHERE userEmail=' + +SqlString.escape(req.body.userEmail) + ' AND userPassword=' + passwordEncrypted + ' LIMIT 1';
 
-            log.info(sql);
+        log.info(sql);
 
-            dbConn.query(sql, (error, results, fields) => {
-                if (error) {
-                    log.error(error.message);
-                    res.status(500).json(defaultResponses.internal_server_error);
-                }
-                else {
+        dbConn.query(sql, (error, results) => {
+            handleResponse({ error, results, res, onlyErrors: true });
 
-                    log.info(results);
-                    log.info(typeof results);
+            //@TODO set bearer token using https://www.npmjs.com/package/express-bearer-token
+            let data = results[0];
+            log.info(data);
 
-                    let data = results[0];
-                    log.info(data);
-
-                    if (typeof results !== 'object' || results.length === 0) {
-                        res.status(404).json(defaultResponses.login_not_found);
-                    }
-                    else if (results) {
-
-                        //@TODO set bearer token using https://www.npmjs.com/package/express-bearer-token
-
-                        defaultResponses.success.data = data;
-                        res.status(200).json(defaultResponses.success);
-                    }
-                }
-            });
-        }
+            defaultResponses.success.data = data;
+            return res.status(200).json(defaultResponses.success);
+        });
     });
 
     /**
