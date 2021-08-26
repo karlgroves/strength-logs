@@ -13,12 +13,14 @@ module.exports = function (app) {
     /**
      * Deletes a record from the DB based on the supplied item type and ID
      */
-    app.delete('/:thing/:id', function (req, res) {
+    app.delete('/:userID/:thing/:id', function (req, res) {
         log.info(new Date(), req.method, req.url);
 
-        let idField = getPKName(req.params.thing);
+        let idField = utils.getPKName(req.params.thing);
 
-        let sql = 'DELETE FROM ' + SqlString.escape(req.params.thing) + ' WHERE ' + SqlString.escape(idField) + '=' + SqlString.escape(req.params.id);
+        let sql = 'DELETE FROM ' + SqlString.escape(req.params.thing) +
+            ' WHERE userID=' + SqlString.escape(req.params.userID) +
+            ' AND ' + SqlString.escape(idField) + '=' + SqlString.escape(req.params.id);
 
         log.info(sql);
 

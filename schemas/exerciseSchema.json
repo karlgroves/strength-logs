@@ -15,7 +15,13 @@
             "description": "Human readable name of the exercise",
             "type": "string",
             "maxLength": 255
-        }
+        },
+        "userID": {
+            "title": "User ID",
+            "description": "Primary Key ID of the user who owns the record",
+            "type": "string",
+            "maxLength": 36
+        },
     }
 }
 

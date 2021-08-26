@@ -17,22 +17,34 @@ const app = express();
 
 app.set('port', process.env.PORT);
 app.set('trust proxy', 1);
+app.disable('x-powered-by');
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// Include the routes file(s)
+
 app.get('/favicon.ico', function (req, res) {
     res.status(204);
     res.end();
 });
 
+// Include the routes file(s)
 require('./routes')(app);
+
+
 
 const server = app.listen(app.get('port'), function (err, res) {
     let host = server.address().address;
     let port = server.address().port;
+
+    if(err){
+        log.error('-----');
+        log.error('Error starting app!');
+        log.error(err);
+        log.error('-----');
+    }
+
     log.info('%s listening at http://%s:%s', pkg.name, host, port);
 });
 

@@ -24,6 +24,13 @@
         "info": "Record identified by the supplied `id` does not exist",
         "data": null
     },
+    "login_not_found": {
+        "status": 404,
+        "message": "NOT FOUND",
+        "code": "not_found",
+        "info": "There is no user found for that username and password combination",
+        "data": null
+    },
     "method_not_allowed": {
         "status": 405,
         "message": "Method Not Allowed",

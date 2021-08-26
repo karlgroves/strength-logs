@@ -1,20 +1,39 @@
 {
-    "logFile":"./logs/reporter.log",
+    "logFile": "./logs/reporter.log",
     "testParams": {
-        "exercises":{
-
-            "exerciseName":""
+        "exercises": {
+            "pass": {
+                "exerciseName": ""
+            },
+            "fail": {
+                "exerciseName": ""
+            }
         },
-        "users":{
-            "userName":"",
-            "userPassword":""
+        "users": {
+            "pass": {
+                "userName": "",
+                "userPassword": ""
+            },
+            "fail": {
+                "userName": "",
+                "userPassword": ""
+            }
         },
-        "traininglogs":{
-            "userID":"",
-            "exerciseID":"",
-            "sets":"",
-            "reps":"",
-            "weight":""
+        "traininglogs": {
+            "pass": {
+                "userID": "",
+                "exerciseID": "",
+                "sets": "",
+                "reps": "",
+                "weight": ""
+            },
+            "fail": {
+                "userID": "",
+                "exerciseID": "",
+                "sets": "",
+                "reps": "",
+                "weight": ""
+            }
         }
     }
 }

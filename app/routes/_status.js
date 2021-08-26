@@ -1,5 +1,5 @@
 /**
- * Status routing
+ * Status routing. Verifies that the necessary services are working properly
  */
 
 const mysql = require('mysql');
@@ -16,7 +16,10 @@ module.exports = function (app) {
 
         let up = true;
 
-        //@TODO check if db is up
+        if (!dbConn || dbConn.state === 'disconnected') {
+            log.error('Database error:' + dbConn.state);
+            up = false;
+        }
 
         // if any services are down, respond with 500
         if (!up) {

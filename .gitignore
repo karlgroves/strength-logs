@@ -1,7 +1,5 @@
 ### PHP storm/ IntelliJ ###
 .idea
-.idea/*
-.idea/workspace.xml
 atlassian-ide-plugin.xml
 .settings
 *.iml
@@ -33,6 +31,5 @@ app/logs/
 .DS_Store
 .npmrc
 .env
-.nyc_output/*
 coverage/
 cypress/instrumented/*

@@ -14,6 +14,8 @@ CREATE TABLE `users` (
     `userID`       VARCHAR(36) NOT NULL,
     `userEmail`    TEXT        NOT NULL,
     `userPassword` VARCHAR(72) NOT NULL,
+    `userConfirmed` ENUM('0','1') DEFAULT '0',
+    `isAdmin` ENUM('0','1') DEFAULT '0',
     PRIMARY KEY `userID` (`userID`)
 )
     ENGINE = InnoDB
@@ -23,7 +25,9 @@ CREATE TABLE `users` (
 CREATE TABLE `exercises` (
     `exerciseID`   VARCHAR(36)  NOT NULL,
     `exerciseName` VARCHAR(255) NOT NULL,
-    PRIMARY KEY `exerciseID` (`exerciseID`)
+    `userID`       VARCHAR(36) NOT NULL,
+    PRIMARY KEY `exerciseID` (`exerciseID`),
+    KEY `userID` (`userID`)
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8mb4
@@ -47,9 +51,9 @@ CREATE TABLE `traininglogs` (
     DEFAULT CHARSET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
-INSERT INTO users (userID, userEmail, userPassword) VALUES
+INSERT INTO users (userID, userEmail, userPassword, userConfirmed, isAdmin) VALUES
     ('207fd15a-316d-4b4a-9797-dc5ec5d56f82', 'karlgroves@gmail.com',
-     '$2a$12$un28Q8L0um91iAQ6aPplbeI6vkF.Nry0Y7aFo03zXmVxnHNDd4qvS');
+     '$2a$12$un28Q8L0um91iAQ6aPplbeI6vkF.Nry0Y7aFo03zXmVxnHNDd4qvS', '1', '1');
 
 INSERT INTO exercises (exerciseID, exerciseName) VALUES ('69f3725f-da1d-429e-ac7b-15e55755e10d', 'Barbell Bench Press');
 

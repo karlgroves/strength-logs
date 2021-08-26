@@ -17,6 +17,7 @@
         "test": "npm install && npm run lint && npm run mocha"
     },
     "dependencies": {
+        "bcrypt": "^5.0.1",
         "body-parser": "^1.19.0",
         "bunyan": "^1.8.15",
         "cors": "^2.8.5",
@@ -31,15 +32,16 @@
         "validator": "^13.6.0"
     },
     "devDependencies": {
-        "eslint": "^7.32.0",
-        "jsdoc": "^3.6.7",
-        "nodemon": "^2.0.12",
         "babel-eslint": "^10.1.0",
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
         "chai-json": "^1.0.0",
+        "eslint": "^7.32.0",
         "husky": "^4.3.0",
+        "jsdoc": "^3.6.7",
+        "jsonlint": "^1.6.3",
         "mocha": "^8.2.1",
+        "nodemon": "^2.0.12",
         "nyc": "^15.1.0"
     }
 }
