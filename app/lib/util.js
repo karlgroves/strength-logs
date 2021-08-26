@@ -35,7 +35,9 @@ module.exports = {
             }
 
             const matched = (Array.isArray(results) && !results.length);
+            log.info('MATCHED');
             log.info(matched);
+            log.info('END MATCHED');
             return matched;
         });
     },

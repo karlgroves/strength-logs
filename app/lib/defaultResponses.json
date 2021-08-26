@@ -5,12 +5,6 @@
         "code": "success",
         "data": null
     },
-    "accepted": {
-        "status": 202,
-        "message": "ACCEPTED",
-        "code": "accepted",
-        "data": null
-    },
     "bad_request": {
         "status": 400,
         "message": "BAD REQUEST",
