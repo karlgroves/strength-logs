@@ -7,7 +7,11 @@
 * Method: `GET`
 * Endpoint: `{hostname}/users/`
 
+### Parameters
+
 ### Validation
+
+ * [General Validation ](docs.md#general-validation) only
 
 ### Example Request
 
@@ -18,7 +22,31 @@
 * Method: `GET`
 * Endpoint: `{hostname}/users/{userID}`
 
+### Parameters
+
+
 ### Validation
+
+ * [General Validation ](docs.md#general-validation) only
+
+
+### Example Request
+
+### Example Response
+
+
+## `HEAD`
+
+* Method: `HEAD`
+* Endpoint: `{hostname}/users/{userID}`
+
+### Parameters
+
+
+### Validation
+
+ * [General Validation ](docs.md#general-validation) only
+
 
 ### Example Request
 
@@ -28,6 +56,8 @@
 
 * Method: `POST`
 * Endpoint: `{hostname}/users/`
+
+### Parameters
 
 ### Validation
 
@@ -40,7 +70,12 @@
 * Method: `PUT`
 * Endpoint: `{hostname}/users/{userID}`
 
+### Parameters
+
 ### Validation
+
+ * [General Validation ](docs.md#general-validation) only
+
 
 ### Example Request
 
@@ -51,7 +86,14 @@
 * Method: `DELETE`
 * Endpoint: `{hostname}/users/{userID}`
 
+### Parameters
+
+ * `userID` the unique primary key of the record being deleted
+
 ### Validation
+
+ * [General Validation ](docs.md#general-validation) only
+
 
 ### Example Request
 

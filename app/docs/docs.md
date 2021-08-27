@@ -2,6 +2,8 @@
 
 ## Purpose and Introduction
 
+The Strength Logs API allows users to keep track of strength training activities.
+
 ## Authentication
 
 Prior to making any requests, the user must be authenticated.  This is done by `POST`ing to the `/login/` route as described in [Register, Confirm, and Login](RegisterConfirmLoginLogout.md).
@@ -11,6 +13,8 @@ Prior to making any requests, the user must be authenticated.  This is done by `
 Any request attempted without that header - or without a valid value for that header - will receive an `HTTP 401` response. Numerous, repeated attempts may result in having the requesting IP banned automatically.
 
 ## Requests
+
+### URL Structure
 
 _In general_ the routing structure uses the following general structure: `{hostname}/{userID}/{object}/{objectID}` where:
 

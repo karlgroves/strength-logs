@@ -2,12 +2,27 @@
 
 ## Introduction
 
+The Register, Confirm, Login, and Logout routes are used - as their names imply - for user registration, confirmation, logging in, and logging out.
+
 ## Register
 
-* Method: `POST`
-* Endpoint: `{hostname}/register/`
+ * Method: `POST`
+ * Endpoint: `{hostname}/register/`
+ 
+### Parameters
+
+#### URL Parameters
+
+ * None
+
+#### Request Body
+
+ * 
+
 
 ### Validation
+
+ * 
 
 ### Example Request
 
@@ -18,8 +33,15 @@
 * Method: `GET`
 * Endpoint: `{hostname}/confirm/{token}`
 
+### Parameters
+
+#### URL Parameters
+
+ * `token`
 
 ### Validation
+
+ * 
 
 ### Example Request
 
@@ -30,7 +52,15 @@
 * Method: `POST`
 * Endpoint: `{hostname}/login/`
 
+### Parameters
+
+#### URL Parameters
+
+* None
+
 ### Validation
+
+* 
 
 ### Example Request
 
@@ -40,7 +70,13 @@
 * Method: `POST`
 * Endpoint: `{hostname}/logout/`
 
+### Parameters
+
+ * None
+
 ### Validation
+
+* 
 
 ### Example Request
 
