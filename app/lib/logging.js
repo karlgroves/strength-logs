@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function (config) {
-    let streams = [{
+    const streams = [{
         stream: process.stdout
     }];
 
@@ -26,11 +26,9 @@ module.exports = function (config) {
         });
     }
 
-    const log = bunyan.createLogger({
+    global.log = bunyan.createLogger({
         name: pkg.name,
         streams: streams,
         src: true
     });
-
-    global.log = log;
 };

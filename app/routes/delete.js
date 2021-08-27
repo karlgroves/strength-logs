@@ -16,7 +16,7 @@ module.exports = function (app) {
     app.delete('/:userID/:thing/:id', function (req, res) {
         log.info(new Date(), req.method, req.url);
 
-        let idField = utils.getPKName(req.params.thing);
+        const idField = utils.getPKName(req.params.thing);
 
         let sql = 'DELETE FROM ' + SqlString.escape(req.params.thing) +
             ' WHERE userID=' + SqlString.escape(req.params.userID) +
@@ -24,23 +24,21 @@ module.exports = function (app) {
 
         log.info(sql);
 
-        dbConn.query(sql, (error, results, fields) => {
+        dbConn.query(sql, (error, results) => {
             if (error) {
                 defaultResponses.internal_server_error.code = error.code;
                 defaultResponses.internal_server_error.info = error.message;
-                res.status(500).json(defaultResponses.internal_server_error);
+                return res.status(500).json(defaultResponses.internal_server_error);
             }
-            else {
-                log.info('Deleted Row(s):', results.affectedRows);
 
-                if (results.affectedRows === 0) {
-                    res.status(404).json(defaultResponses.not_found);
-                }
-                else {
-                    defaultResponses.success.info = 'Record was successfully deleted';
-                    res.status(200).json(defaultResponses.success);
-                }
+            log.info('Deleted Row(s):', results.affectedRows);
+
+            if (results.affectedRows === 0) {
+                return res.status(404).json(defaultResponses.not_found);
             }
+
+            defaultResponses.success.info = 'Record was successfully deleted';
+            return res.status(200).json(defaultResponses.success);
         });
     });
 
