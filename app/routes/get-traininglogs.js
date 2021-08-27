@@ -7,6 +7,7 @@ const defaultResponses = require('../lib/defaultResponses.json');
 const SqlString = require('sqlstring');
 const dbService = require('../lib/dbService');
 const handleResponse = require('../helpers/handleResponse');
+const util = require('../lib/util');
 const dbConn = dbService.db();
 
 module.exports = function (app) {
@@ -14,11 +15,11 @@ module.exports = function (app) {
     /**
      *  GET request just lists records
      */
-    app.get('/:userID/traininglogs/', function (req, res) {
+    app.get('/:userID/traininglogs/', async function (req, res) {
         log.info(new Date(), req.method, req.url);
 
         // @TODO validate that the userID exists
-        const userExists = util.userExists(req.params.userID);
+        const userExists = await util.userExists(req.params.userID);
         log.info(userExists);
 
         //

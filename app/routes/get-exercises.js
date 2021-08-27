@@ -8,18 +8,18 @@ const SqlString = require('sqlstring');
 const dbService = require('../lib/dbService');
 const dbConn = dbService.db();
 const handleResponse = require('../helpers/handleResponse');
+const util = require('../lib/util');
 
 module.exports = function (app) {
 
     /**
      *  GET request lists all of the user's exercises
      */
-    app.get('/:userID/exercises/', function (req, res) {
+    app.get('/:userID/exercises/', async function (req, res) {
         log.info(new Date(), req.method, req.url);
 
         // @TODO validate that the userID exists
-        const userExists = util.userExists(req.params.userID);
-        log.info(userExists);
+        const userExists = await util.userExists(req.params.userID);
 
 
         // @TODO validate that the person making the request is that user or an admin
@@ -28,13 +28,18 @@ module.exports = function (app) {
         log.info(sql);
 
         dbConn.query(sql, (error, results) => {
-            handleResponse({ error, results, res, onlyErrors: true });
+            handleResponse({
+                error,
+                results,
+                res,
+                successCb: () => {
+                    const data = JSON.stringify(results);
+                    log.info(data);
 
-            const data = JSON.stringify(results);
-            log.info(data);
-
-            defaultResponses.success.data = results;
-            return res.status(200).json(defaultResponses.success);
+                    defaultResponses.success.data = results;
+                    return res.status(200).json(defaultResponses.success);
+                }
+            });
         });
     });
 
@@ -43,12 +48,12 @@ module.exports = function (app) {
      *  GET request retrieves a record as identified by both the `userID` and `id` parameters
      *  HEAD request determines if the record exists
      */
-    app.get('/:userID/exercises/:id', function (req, res) {
+    app.get('/:userID/exercises/:id', async function (req, res) {
         log.info(new Date(), req.method, req.url);
         log.info('Requested ID: ' + req.params.id);
 
         // @TODO validate that the userID exists
-        const userExists = util.userExists(req.params.userID);
+        const userExists = await util.userExists(req.params.userID);
         log.info(userExists);
 
 

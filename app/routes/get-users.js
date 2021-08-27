@@ -33,12 +33,12 @@ module.exports = function (app) {
      *  GET request retrieves a record as identified by both the `userID` and `id` parameters
      *  HEAD request determines if the record exists
      */
-    app.get('/users/:id', function (req, res) {
+    app.get('/users/:id', async function (req, res) {
         log.info(new Date(), req.method, req.url);
         log.info('Requested ID: ' + req.params.id);
 
         // @TODO validate that the userID exists
-        const userExists = utils.userExists(req.params.id);
+        const userExists = await utils.userExists(req.params.id);
 
         console.log('-----');
         console.log('USER EXISTS');

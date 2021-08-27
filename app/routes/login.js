@@ -31,14 +31,20 @@ module.exports = function (app) {
         log.info(sql);
 
         dbConn.query(sql, (error, results) => {
-            handleResponse({ error, results, res, onlyErrors: true });
+            handleResponse({
+                error,
+                results,
+                res,
+                onlyErrors: true,
+                successCb: () => {
+                    //@TODO set bearer token using https://www.npmjs.com/package/express-bearer-token
+                    let data = results[0];
+                    log.info(data);
 
-            //@TODO set bearer token using https://www.npmjs.com/package/express-bearer-token
-            let data = results[0];
-            log.info(data);
-
-            defaultResponses.success.data = data;
-            return res.status(200).json(defaultResponses.success);
+                    defaultResponses.success.data = data;
+                    return res.status(200).json(defaultResponses.success);
+                },
+            });
         });
     });
 

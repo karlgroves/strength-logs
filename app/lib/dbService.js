@@ -2,7 +2,7 @@
  * creates a connection to the database
  */
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const SqlString = require('sqlstring');
 const config = require('../config.json');
 

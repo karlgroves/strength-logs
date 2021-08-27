@@ -32,8 +32,6 @@ app.get('/favicon.ico', function (req, res) {
 // Include the routes file(s)
 require('./routes')(app);
 
-
-
 const server = app.listen(app.get('port'), function (err, res) {
     const host = server.address().address;
     const port = server.address().port;
