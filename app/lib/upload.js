@@ -27,7 +27,7 @@ module.exports = {
                 }
             };
 
-            let uploader = client.uploadFile(params);
+            const uploader = client.uploadFile(params);
 
             uploader.on('error', function (err) {
                 log.error('unable to upload:', err.stack);

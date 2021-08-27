@@ -2,7 +2,7 @@
  * creates a connection to the database
  */
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const SqlString = require('sqlstring');
 const config = require('../config.json');
 
@@ -12,7 +12,7 @@ module.exports = {
 
     db: function () {
 
-        let connection = mysql.createConnection({
+        const connection = mysql.createConnection({
             debug: process.env.DB_DEBUG || false,
             host: process.env.DB_HOSTNAME,
             user: process.env.DB_USERNAME,
@@ -24,9 +24,8 @@ module.exports = {
             if (error) {
                 throw new Error('Connection error: ' + error.code + ' ' + error.message);
             }
-            else {
-                log.info('Connected to the MySQL server.');
-            }
+
+            log.info('Connected to the MySQL server.');
         });
 
         return connection;

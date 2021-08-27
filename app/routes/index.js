@@ -9,7 +9,7 @@ module.exports = function (app) {
         if (file === 'index.js') {
             return;
         }
-        let name = file.substr(0, file.indexOf('.'));
+        const name = file.substr(0, file.indexOf('.'));
         require('./' + name)(app);
     });
 };
