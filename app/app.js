@@ -36,7 +36,7 @@ const server = app.listen(app.get('port'), function (err, res) {
     const host = server.address().address;
     const port = server.address().port;
 
-    if(err){
+    if (err) {
         log.error('-----');
         log.error('Error starting app!');
         log.error(err);

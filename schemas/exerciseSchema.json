@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "title": "Exercises",
-    "description": "Format of a specific exercises",
+    "description": "Format of a specific exercise",
     "type": "object",
     "properties": {
         "exerciseID": {

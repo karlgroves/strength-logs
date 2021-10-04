@@ -22,10 +22,7 @@ module.exports = function (app) {
         const userExists = await util.userExists(req.params.userID);
         log.info(userExists);
 
-        //
-        //
-        //
-        // and the person making the request is that user
+        // @TODO validate that the person making the request is that user
 
 
         const sql = 'SELECT ' +

@@ -42,6 +42,9 @@ module.exports = function (app) {
         });
     });
 
+    //@TODO delete without userID should be 400
+    //@TODO delete without a "thing" should be 400
+
     /**
      * Returns a 400 because a "thing" wasn't provided
      */
