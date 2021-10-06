@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: app/routes/delete.js</title>
+    <title>JSDoc: Source: app/routes/register.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: app/routes/delete.js</h1>
+    <h1 class="page-title">Source: app/routes/register.js</h1>
 
     
 
@@ -27,64 +27,61 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * DELETE routing
+ * POST routing to registration endpoint
  */
 
+const validator = require('validator');
 const defaultResponses = require('../lib/defaultResponses.json');
-const SqlString = require('sqlstring');
 const dbService = require('../lib/dbService');
 const dbConn = dbService.db();
 const utils = require('../lib/util');
+const bcrypt = require('bcrypt');
+const handleResponse = require('../helpers/handleResponse');
+
 
 module.exports = function (app) {
 
     /**
-     * Deletes a record from the DB based on the supplied item type and ID
+     * Posts a new request to the register
      */
-    app.delete('/:userID/:thing/:id', function (req, res) {
-        log.info(new Date(), req.method, req.url);
+    app.post('/register/', async (req, res) => {
+        let valid = true;
 
-        // @TODO validate that the userID exists?
+        log.info(new Date(), req.method, req.url, req.body);
 
-        const idField = utils.getPKName(req.params.thing);
+        if (typeof req.body !== 'object') {
+            defaultResponses.bad_request.info = 'request body is malformed';
+            return res.status(400).json(defaultResponses.bad_request);
+        }
 
-        let sql = 'DELETE FROM ' + SqlString.escape(req.params.thing) +
-            ' WHERE userID=' + SqlString.escape(req.params.userID) +
-            ' AND ' + SqlString.escape(idField) + '=' + SqlString.escape(req.params.id);
+        //@TODO validate useremail, userpassword, ensure nobody with that same useremail already exists
+        //@TODO bCrypt the password
+        //@TODO generate UUID as the userID
+        //@TODO use the last 12 chars as part of the confirm link: ```str.substring(24, 36)```
+        //@TODO send a confirmation email using `npm install nodemailer`
+
+
+        const sql = 'INSERT INTO users() VALUES()';
 
         log.info(sql);
 
+
         dbConn.query(sql, (error, results) => {
-            if (error) {
-                defaultResponses.internal_server_error.code = error.code;
-                defaultResponses.internal_server_error.info = error.message;
-                return res.status(500).json(defaultResponses.internal_server_error);
-            }
-
-            log.info('Deleted Row(s):', results.affectedRows);
-
-            if (results.affectedRows === 0) {
-                return res.status(404).json(defaultResponses.not_found);
-            }
-
-            defaultResponses.success.info = 'Record was successfully deleted';
-            return res.status(200).json(defaultResponses.success);
+            handleResponse({ error, results, res });
         });
     });
 
-    //@TODO delete without userID should be 400
-    //@TODO delete without a "thing" should be 400
 
-    /**
-     * Returns a 400 because a "thing" wasn't provided
-     */
-    app.delete('*', function (req, res) {
-        log.info(new Date(), req.method, req.url);
-        log.info(req.params);
-        defaultResponses.bad_request.info = 'Invalid Route Supplied for DELETE request';
-        res.status(400).json(defaultResponses.bad_request);
+    app.get('/confirm/:id', async (req, res) => {
+        log.info(new Date(), req.method, req.url, req.body);
+
+        //@TODO validate the `ID`: SELECT * FROM users WHERE SUBSTRING(userID, 25, 12) = ' + req.params.id;
+
+        //@TODO do all the things
+
+        //@TODO send a confirmation email
+
     });
-
 };
 </code></pre>
         </article>

@@ -10,7 +10,7 @@ const handleResponse = ({ error, res, results, successCb }) => {
     log.info(typeof results);
 
     if (!results || !Array.isArray(results) || !results.length) {
-        return res.status(404).json(defaultResponses.login_not_found);
+        return res.status(404).json(defaultResponses.not_found);
     }
 
     if (successCb) {

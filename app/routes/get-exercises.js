@@ -21,7 +21,6 @@ module.exports = function (app) {
         // @TODO validate that the userID exists
         const userExists = await util.userExists(req.params.userID);
 
-
         // @TODO validate that the person making the request is that user or an admin
 
         const sql = `SELECT * FROM exercises WHERE userID=${SqlString.escape(req.params.userID)}`;
@@ -55,7 +54,6 @@ module.exports = function (app) {
         // @TODO validate that the userID exists
         const userExists = await util.userExists(req.params.userID);
         log.info(userExists);
-
 
         // @TODO validate that the person making the request is that user or an admin
 

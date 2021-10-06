@@ -6,6 +6,9 @@ const defaultResponses = require('../lib/defaultResponses.json');
 
 module.exports = function (app) {
 
+    //@TODO get without userID should be 400
+    //@TODO get without a "thing" should be 400
+
     /**
      * Requires a "thing" for all gets
      */

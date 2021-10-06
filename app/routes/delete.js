@@ -16,6 +16,8 @@ module.exports = function (app) {
     app.delete('/:userID/:thing/:id', function (req, res) {
         log.info(new Date(), req.method, req.url);
 
+        // @TODO validate that the userID exists?
+
         const idField = utils.getPKName(req.params.thing);
 
         let sql = 'DELETE FROM ' + SqlString.escape(req.params.thing) +
@@ -41,6 +43,9 @@ module.exports = function (app) {
             return res.status(200).json(defaultResponses.success);
         });
     });
+
+    //@TODO delete without userID should be 400
+    //@TODO delete without a "thing" should be 400
 
     /**
      * Returns a 400 because a "thing" wasn't provided
