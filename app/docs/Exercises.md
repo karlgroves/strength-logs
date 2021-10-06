@@ -242,7 +242,7 @@ UPDATE exercises SET WHERE userID={userID} AND exerciseID={exerciseID};
 If the request passes validation, the following query is run against the database:
 
 ```
-DELETE FROM exercises WHERE userID={} AND exerciseID={exerciseID};
+DELETE FROM exercises WHERE userID={userID} AND exerciseID={exerciseID};
 ```
 
 #### On Success

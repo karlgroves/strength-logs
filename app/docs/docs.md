@@ -38,15 +38,15 @@ Assuming the request is valid and the user has the necessary permissions, the fo
  * `PUT` operations will always update a specific record as identified by the `ID` being requested.
  * `DELETE` operations will always delete a specific record as identified by the `ID` being requested. _`DELETE` operations are permanent and irreversible_
  
-All successful requests return HTTP `200` response 
+All successful requests return HTTP `200` response. 
  
 ### General Validation
 
 While some routes will have their own unique object-specific validation, *all* routes have the following basic validation:
 
  * The `userID` supplied must either:
-   * Be the `ID` of the user making the request, or
-   * If the user making the request is an admin, the `userID` must be a UUID of an actual user in the database
+   * Be the primary key ID of the user making the request, or
+   * If the user making the request is an admin, the `userID` must be a UUID matching an actual user in the database
  * The `object` supplied  must be one of:
    * `exercises`
    * `traininglogs`
@@ -75,3 +75,14 @@ While some routes will have their own unique object-specific validation, *all* r
 | `404` | The `id` provided was not valid or was not owned by the user making the request |
 | `405` | The `object` provided was not valid |
 | `500` | There was a problem on our end and the request could not be processed |
+
+
+### Additional information
+
+#### Code
+
+The `code` returned in the response is a short token value that provides additional details on the nature of the response.
+
+#### Info
+
+The `info` returned is a (potentially) long string that explains, in more detail, what has happened during the operation.  For example, for a `400` response, the API will return a `code` of `bad_request`, but the `info` content will explain why the request was bad, including (where relevant) what input was invalid and why.

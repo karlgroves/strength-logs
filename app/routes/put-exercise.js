@@ -6,7 +6,6 @@ const defaultResponses = require('../lib/defaultResponses.json');
 const dbService = require('../lib/dbService');
 const dbConn = dbService.db();
 
-
 const utils = require('../lib/util');
 
 module.exports = function (app) {

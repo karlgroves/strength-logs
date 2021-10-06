@@ -54,7 +54,7 @@ module.exports = function (app) {
     app.get('/logout/', async (req, res) => {
         log.info(new Date(), req.method, req.url, req.body);
 
-        //@TODO destroy the token
+        //@TODO destroy the token and do whatever is needed to consider the user "logged out"
 
     });
 };

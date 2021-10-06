@@ -29,7 +29,6 @@ module.exports = function (app) {
 
         // @TODO validate that the person making the request is that user or an admin
 
-
         if (validator.isEmpty(req.body.exerciseName)) {
             valid = false;
             msg += 'Supplied exercise name is invalid';

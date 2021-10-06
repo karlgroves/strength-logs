@@ -27,132 +27,109 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * GET routing
+ * GET routing for exercise objects
  */
 
 const validator = require('validator');
 const defaultResponses = require('../lib/defaultResponses.json');
-const mysql = require('mysql');
 const SqlString = require('sqlstring');
-const config = require('../config.json');
 const dbService = require('../lib/dbService');
-let dbConn = dbService.db();
-const utils = require('../lib/util');
+const dbConn = dbService.db();
+const handleResponse = require('../helpers/handleResponse');
+const util = require('../lib/util');
 
 module.exports = function (app) {
 
     /**
-     *  GET request just lists records
+     *  GET request lists all of the user's exercises
      */
-    app.get('/exercises/', function (req, res) {
+    app.get('/:userID/exercises/', async function (req, res) {
         log.info(new Date(), req.method, req.url);
 
-        let sql = 'SELECT * FROM exercises';
+        // @TODO validate that the userID exists
+        const userExists = await util.userExists(req.params.userID);
+
+        // @TODO validate that the person making the request is that user or an admin
+
+        const sql = `SELECT * FROM exercises WHERE userID=${SqlString.escape(req.params.userID)}`;
         log.info(sql);
 
-        dbConn.query(sql, (error, results, fields) => {
-            if (error) {
-                log.error(error);
-                defaultResponses.internal_server_error.info = error;
-                res.status(500).json(defaultResponses.internal_server_error);
-            }
-            else {
+        dbConn.query(sql, (error, results) => {
+            handleResponse({
+                error,
+                results,
+                res,
+                successCb: () => {
+                    const data = JSON.stringify(results);
+                    log.info(data);
 
-                log.info(results);
-                log.info(typeof results);
-
-                let data = JSON.stringify(results);
-                log.info(data);
-
-                if (typeof results !== 'object') {
-                    res.status(404).json(defaultResponses.not_found);
-                }
-                else if (results) {
                     defaultResponses.success.data = results;
-                    res.status(200).json(defaultResponses.success);
+                    return res.status(200).json(defaultResponses.success);
                 }
-            }
+            });
         });
     });
 
-
     /**
      *  Handles both GET and HEAD requests (because express is stupid).
-     *  GET request retrieves a record as identified by the `id` parameter
+     *  GET request retrieves a record as identified by both the `userID` and `id` parameters
      *  HEAD request determines if the record exists
      */
-    app.get('/exercises/:id', function (req, res) {
+    app.get('/:userID/exercises/:id', async function (req, res) {
         log.info(new Date(), req.method, req.url);
         log.info('Requested ID: ' + req.params.id);
 
-        let idField = utils.getPKName(req.params.thing);
+        // @TODO validate that the userID exists
+        const userExists = await util.userExists(req.params.userID);
+        log.info(userExists);
 
+        // @TODO validate that the person making the request is that user or an admin
+
+        // Handle HEAD requests
         if (req.method === 'HEAD') {
             log.info(req.method);
 
             if (validator.isUUID(req.params.id) === false) {
-                res.status(400).end();
+                return res.status(400).end();
             }
-            else {
-                let sql = 'SELECT exerciseID FROM exercises WHERE exerciseID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
-                log.info(sql);
 
-                dbConn.query(sql, (error, results, fields) => {
-                    if (error) {
-                        log.error(error.message);
-                        res.status(500).end();
-                    }
-                    else {
-                        log.info(results);
-                        log.info(typeof results);
+            const sql = 'SELECT exerciseID FROM exercises WHERE userID=' + SqlString.escape(req.params.userID) +
+                ' AND exerciseID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
 
-                        let data = results[0];
-                        log.info(data);
+            log.info(sql);
 
-                        if (typeof results !== 'object' || results.length === 0) {
-                            res.status(404).end();
-                        }
-                        else if (results) {
-                            defaultResponses.success.data = data;
-                            res.status(200).end();
-                        }
-                    }
-                });
-            }
-        }
+            dbConn.query(sql, (error, results) => {
+                if (error) {
+                    log.error(error.message);
+                    return res.status(500).end();
+                }
 
-        else {
+                log.info(results);
+                log.info(typeof results);
 
+                if (!results || !Array.isArray(results) || !results.length) {
+                    return res.status(404).end();
+                }
+
+                const data = results[0];
+                log.info(data);
+
+                defaultResponses.success.data = data;
+                return res.status(200).end();
+            });
+        } else {
             if (validator.isUUID(req.params.id) === false) {
-                res.status(400).json(defaultResponses.bad_request);
+                return res.status(400).json(defaultResponses.bad_request);
             }
-            else {
-                let sql = 'SELECT * FROM exercises WHERE exerciseID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
-                log.info(sql);
 
-                dbConn.query(sql, (error, results, fields) => {
-                    if (error) {
-                        log.error(error.message);
-                        res.status(500).json(defaultResponses.internal_server_error);
-                    }
-                    else {
+            const sql = 'SELECT * FROM exercises WHERE userID=' + SqlString.escape(req.params.userID) +
+                ' AND exerciseID=' + SqlString.escape(req.params.id) + ' LIMIT 1';
 
-                        log.info(results);
-                        log.info(typeof results);
+            log.info(sql);
 
-                        let data = results[0];
-                        log.info(data);
-
-                        if (typeof results !== 'object') {
-                            res.status(404).json(defaultResponses.not_found);
-                        }
-                        else if (results) {
-                            defaultResponses.success.data = data;
-                            res.status(200).json(defaultResponses.success);
-                        }
-                    }
-                });
-            }
+            dbConn.query(sql, (error, results) => {
+                handleResponse({ error, results, res });
+            });
         }
     });
 
@@ -167,13 +144,13 @@ module.exports = function (app) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#chai">chai</a></li><li><a href="global.html#defaultResponses">defaultResponses</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#mysql">mysql</a></li><li><a href="global.html#pkg">pkg</a></li><li><a href="global.html#s3">s3</a></li><li><a href="global.html#validator">validator</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#chai">chai</a></li><li><a href="global.html#dbService">dbService</a></li><li><a href="global.html#defaultResponses">defaultResponses</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#mysql">mysql</a></li><li><a href="global.html#pkg">pkg</a></li><li><a href="global.html#s3">s3</a></li><li><a href="global.html#SqlString">SqlString</a></li><li><a href="global.html#validator">validator</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Aug 23 2021 18:44:38 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Oct 05 2021 21:21:21 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

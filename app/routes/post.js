@@ -6,8 +6,8 @@ const defaultResponses = require('../lib/defaultResponses.json');
 
 module.exports = function (app) {
 
-    //@TODO delete without userID should be 400
-    //@TODO delete without a "thing" should be 400
+    //@TODO post without userID should be 400
+    //@TODO post without a "thing" should be 400
 
     /**
      * Requires a "thing" for all posts
