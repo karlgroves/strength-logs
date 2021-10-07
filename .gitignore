@@ -1,7 +1,5 @@
 ### PHP storm/ IntelliJ ###
 .idea
-atlassian-ide-plugin.xml
-.settings
 *.iml
 
 ### vim ###

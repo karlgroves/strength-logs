@@ -22,6 +22,6 @@ const handleResponse = ({ error, res, results, successCb }) => {
 
     defaultResponses.success.data = data;
     return res.status(200).json(defaultResponses.success);
-}
+};
 
 module.exports = handleResponse;

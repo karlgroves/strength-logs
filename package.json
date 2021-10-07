@@ -11,6 +11,7 @@
         "docs": "jsdoc -c jsdoc.json",
         "lint": "eslint app --ext .js",
         "preinstall": "npm install graceful-fs@4.2.4 && npx npm-force-resolutions",
+        "postinstall": "npm audit fix",
         "dev": "nodemon app/app.js",
         "test:coverage": "nyc mocha test/*.js",
         "mocha": "nyc mocha --exit --recursive --timeout 30000",

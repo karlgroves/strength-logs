@@ -21,7 +21,7 @@
             "description": "Primary Key ID of the user who owns the record",
             "type": "string",
             "maxLength": 36
-        },
+        }
     }
 }
 

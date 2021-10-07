@@ -26,7 +26,7 @@ module.exports = function (app) {
 
         //@TODO encrypt the password: ``` req.body.userPassword ``` using https://www.npmjs.com/package/bcrypt
 
-        const sql = 'SELECT userID FROM users WHERE userEmail=' + +SqlString.escape(req.body.userEmail) + ' AND userPassword=' + passwordEncrypted + ' LIMIT 1';
+        const sql = 'SELECT userID FROM users WHERE userEmail=' + SqlString.escape(req.body.userEmail) + ' AND userPassword=' + passwordEncrypted + ' LIMIT 1';
 
         log.info(sql);
 
